@@ -389,6 +389,21 @@ void BlockStackScene::drawRain(Renderer& renderer) {
     }
 }
 
+// Loops blockstack_pr32_audio::kThemeMusic on the single shared buzzer
+// voice, ducking out for one-shot SFX (see the header's comment on why).
+void BlockStackScene::updateMusic() {
+    if (!musicShouldPlay) {
+        if (music.isPlaying()) music.stop();
+        return;
+    }
+    if (sfx.isPlaying()) return;  // one-shot SFX has the only voice this frame
+    if (!music.isPlaying()) {
+        music.play(blockstack_pr32_audio::kThemeMusic, blockstack_pr32_audio::kThemeMusicLen);
+    } else {
+        music.update();
+    }
+}
+
 void BlockStackScene::update(unsigned long deltaTime) {
     constexpr unsigned long kMaxFrameMs = 50;
     if (deltaTime > kMaxFrameMs) deltaTime = kMaxFrameMs;
@@ -399,6 +414,8 @@ void BlockStackScene::update(unsigned long deltaTime) {
     if (titlePhase == 0) {
         titleTimer += dt;
         sfx.update();
+        musicShouldPlay = false;
+        updateMusic();
         constexpr float kTitleDurationS = 4.0f;
         if (pendingInput.aEdge || titleTimer >= kTitleDurationS) {
             titlePhase = 1;
@@ -426,17 +443,27 @@ void BlockStackScene::update(unsigned long deltaTime) {
         pauseLatched = false;
         returnToMenuLatched = false;
     }
-    if (paused) { Scene::update(deltaTime); return; }
+    if (paused) {
+        musicShouldPlay = false;
+        updateMusic();
+        Scene::update(deltaTime);
+        return;
+    }
 
     sfx.update();
 
     if (flashTimer > 0.0f) flashTimer -= dt;
 
     if (gameOver) {
+        musicShouldPlay = false;
+        updateMusic();
         if (pendingInput.aEdge) init();
         Scene::update(deltaTime);
         return;
     }
+
+    musicShouldPlay = true;
+    updateMusic();
 
     // Left/right movement: thumbstick only, with DAS (delayed auto-shift,
     // same idiom as every serious falling-block game) — the encoder used

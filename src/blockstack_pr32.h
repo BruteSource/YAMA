@@ -173,6 +173,19 @@ private:
     static constexpr int kFieldTop = 6;  // top of the VISIBLE field
 
     blockstack_pr32_audio::NoteSequencer sfx;
+
+    // Background music (see blockstack_pr32_audio::kThemeMusic) — a
+    // separate NoteSequencer from `sfx` since it needs to keep looping
+    // independently of one-shot SFX, but this hardware only has ONE
+    // buzzer, so the two can't literally sound at once. Arbitrated in
+    // updateMusic(): a one-shot SFX (sfx.isPlaying()) always wins the
+    // single voice for its own duration; music's own update()/tone() calls
+    // are simply skipped for those frames (not reset — it resumes from
+    // its current note once the SFX ends, same idiom as every other
+    // "monophonic buzzer, SFX ducks music" implementation).
+    blockstack_pr32_audio::NoteSequencer music;
+    bool musicShouldPlay = false;
+    void updateMusic();
 };
 
 } // namespace blockstack_pr32

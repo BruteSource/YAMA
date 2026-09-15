@@ -20,7 +20,9 @@ constexpr uint16_t NOTE_B4 = 494;
 constexpr uint16_t NOTE_C5 = 523;
 constexpr uint16_t NOTE_D5 = 587;
 constexpr uint16_t NOTE_E5 = 659;
+constexpr uint16_t NOTE_F5 = 698;
 constexpr uint16_t NOTE_G5 = 784;
+constexpr uint16_t NOTE_A5 = 880;
 constexpr uint16_t NOTE_C6 = 1047;
 constexpr uint16_t NOTE_A2 = 110;
 
@@ -70,5 +72,32 @@ constexpr Note kIntroJingle[] = {
     { NOTE_B4, 80 }, { NOTE_C5, 160 },
 };
 constexpr int kIntroJingleLen = sizeof(kIntroJingle) / sizeof(kIntroJingle[0]);
+
+// Background music loop — an original arrangement of "Korobeiniki"
+// ("Коробейники"), the traditional 19th-century Russian folk melody
+// famously used as Tetris's "Music A." The folk tune itself is public
+// domain (a 160+ year old melody, not something any Tetris rights
+// holder owns) — this is a fresh transcription/arrangement for this
+// project's single-voice piezo buzzer via NoteSequencer, not copied
+// from any specific game's arrangement. Looped manually by the scene
+// (see BlockStackScene::updateMusic()) since NoteSequencer itself only
+// plays once per play() call.
+constexpr Note kThemeMusic[] = {
+    // Phrase A
+    { NOTE_E5, 400 }, { NOTE_B4, 200 }, { NOTE_C5, 200 }, { NOTE_D5, 400 },
+    { NOTE_C5, 200 }, { NOTE_B4, 200 }, { NOTE_A4, 400 }, { NOTE_A4, 200 },
+    { NOTE_C5, 200 }, { NOTE_E5, 400 }, { NOTE_D5, 200 }, { NOTE_C5, 200 },
+    { NOTE_B4, 600 }, { NOTE_C5, 200 }, { NOTE_D5, 400 },
+    { NOTE_E5, 400 }, { NOTE_C5, 400 }, { NOTE_A4, 400 }, { NOTE_A4, 400 },
+    { 0, 400 },
+    // Phrase B
+    { NOTE_D5, 600 }, { NOTE_F5, 200 }, { NOTE_A5, 400 },
+    { NOTE_G5, 200 }, { NOTE_F5, 200 }, { NOTE_E5, 600 }, { NOTE_C5, 200 },
+    { NOTE_E5, 400 }, { NOTE_D5, 200 }, { NOTE_C5, 200 },
+    { NOTE_B4, 400 }, { NOTE_B4, 200 }, { NOTE_C5, 200 }, { NOTE_D5, 400 },
+    { NOTE_E5, 400 }, { NOTE_C5, 400 }, { NOTE_A4, 400 }, { NOTE_A4, 400 },
+    { 0, 400 },
+};
+constexpr int kThemeMusicLen = sizeof(kThemeMusic) / sizeof(kThemeMusic[0]);
 
 } // namespace blockstack_pr32_audio

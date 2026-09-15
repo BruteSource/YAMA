@@ -13,6 +13,7 @@ A 7-game handheld arcade console on a custom ESP32 board with a 2.0" color TFT, 
 - A manual deep-sleep mode for long downtime, woken with a single button press
 - High scores saved per-game, persisted across power cycles
 - Full analog thumbstick + rotary encoder + button controls, tuned per game
+- An attract/demo mode (hold L3 2s at the menu) that auto-plays through every game so you can show it off without touching it
 
 ## Games
 

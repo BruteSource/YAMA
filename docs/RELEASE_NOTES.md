@@ -26,6 +26,7 @@ Replace `/dev/ttyUSB0` with your board's serial port (e.g. `COM3` on Windows). T
 - Mute toggle, idle auto light-sleep (button-wake, resumes exactly where you left off), and a manually-triggered deep-sleep menu entry for long downtime
 - Hard reset combo
 - High scores persisted per-game across power cycles
+- An attract/demo mode (hold L3 2s at the menu) that auto-plays through every game for 15s each, skipping ahead a level/round on the second of every 3 laps — cancels the instant you touch anything
 
 ## Known issues / not yet final
 

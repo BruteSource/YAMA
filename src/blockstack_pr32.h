@@ -102,6 +102,15 @@ private:
     static constexpr float kDasDelayS = 0.18f;
     static constexpr float kDasRepeatS = 0.045f;
 
+    // The physical encoder emits 4 raw quadrature counts per real mechanical
+    // detent (confirmed by menu_pr32.cpp's own kEncStepThreshold=4, needed
+    // for the exact same reason) -- rotating on every raw encDelta tick
+    // without accumulating first fires up to 4 rotations per actual knob
+    // click, which is what made encoder-rotate feel "way too sensitive"
+    // when it was first wired up directly.
+    int encRotateAccum = 0;
+    static constexpr int kEncStepThreshold = 4;
+
     int score = 0;
     int level = 1;
     int linesCleared = 0;

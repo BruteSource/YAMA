@@ -458,22 +458,43 @@ void BlockStackScene::update(unsigned long deltaTime) {
         }
     }
     // Encoder rotates instead of nudging left/right (user's explicit
-    // preference over the redundant-with-thumbstick move it used to do) —
-    // one tick = one rotation step, same direction sense as the encoder's
-    // own physical rotation. R3 (clicking the encoder in) is the "auto
-    // drop" hard-drop instead of hold — A takes over hold piece instead,
-    // since hard drop moved off it. RB/LB still rotate too (unchanged,
-    // kept as a redundant alternate control, same as every other input
-    // this project layers rather than removes).
-    if (pendingInput.encDelta > 0) tryRotate(1);
-    else if (pendingInput.encDelta < 0) tryRotate(-1);
+    // preference over the redundant-with-thumbstick move it used to do).
+    // Accumulate raw ticks and only rotate every kEncStepThreshold (4) of
+    // them, same as menu_pr32.cpp's own encoder handling — the physical
+    // encoder emits 4 raw quadrature counts per real detent, so rotating
+    // on every raw tick fired up to 4 rotations per actual knob click
+    // (reported live as "way too sensitive").
+    encRotateAccum += static_cast<int>(pendingInput.encDelta);
+    if (encRotateAccum >= kEncStepThreshold) {
+        tryRotate(1);
+        encRotateAccum = 0;
+    } else if (encRotateAccum <= -kEncStepThreshold) {
+        tryRotate(-1);
+        encRotateAccum = 0;
+    }
 
     if (pendingInput.rbEdge) tryRotate(1);
     if (pendingInput.lbEdge) tryRotate(-1);
     if (pendingInput.aEdge) holdPiece();
-    if (pendingInput.r3Edge && !pendingInput.r3Held) hardDrop();
+    // R3 (clicking the encoder in) is the "auto drop" hard-drop instead of
+    // hold piece — A takes over hold piece instead, since hard drop moved
+    // off it. Just `r3Edge` alone, matching every other game's convention
+    // (rtype_pr32.cpp, digdug_pr32.cpp) — the old `&& !r3Held` guard here
+    // could never actually pass on real hardware: r3Edge only goes true on
+    // the exact frame the button transitions to pressed, and r3Held is
+    // already true that same frame (it reflects current state, read right
+    // after r3Edge is computed from the same press), so `!r3Held` was
+    // always false whenever r3Edge was true. This silently broke hold
+    // piece before (never fired from a real press) and broke hard drop the
+    // same way the moment it was moved onto this binding.
+    if (pendingInput.r3Edge) hardDrop();
 
-    bool softDrop = pendingInput.thumbY > 0.5f;
+    // thumbY follows the real thumbstick's own raw-value convention
+    // (positive = physically UP, confirmed in digdug_pr32.cpp's identical
+    // up/down split and main.cpp's debug-injection comment) — this was
+    // checking `> 0.5f`, i.e. "stick pushed UP", so soft drop could only
+    // ever fire by pushing up, never down as intended.
+    bool softDrop = pendingInput.thumbY < -0.5f;
     float interval = softDrop ? gravityIntervalS * 0.1f : gravityIntervalS;
     gravityTimer += dt;
     if (gravityTimer >= interval) {
@@ -606,7 +627,7 @@ void BlockStackScene::drawTitleScreen(Renderer& renderer) {
     };
     const char* title = "TETRIS";
     renderer.drawText(title, centerX(title, kLogoFont, 1), 100, Color::Cyan, 1, kLogoFont);
-    const char* sub = "THE CLASSIC FALLING-BLOCK PUZZLE";
+    const char* sub = "THE CLASSIC PUZZLE GAME";
     renderer.drawText(sub, centerX(sub, kHudFont), 140, Color::White, 1, kHudFont);
     if (fmodf(titleTimer, 1.0f) < 0.7f) {
         const char* push = "PRESS A TO START";

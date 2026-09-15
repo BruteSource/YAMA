@@ -71,6 +71,61 @@ const CellOffset kPieceShapes[kNumPieceTypes][4][4] = {
 
 const int kPieceBoxSize[kNumPieceTypes] = { 4, 3, 3, 2, 3, 3, 3 };
 
+namespace {
+// The PR32 palette's actual RGB565 values for the 7 piece colors (see
+// PaletteDefs.h's PALETTE_PR32) — needed here because scaling a Color
+// enum value (a palette INDEX, not an RGB value) makes no sense; only
+// the real RGB565 can be lightened/darkened for the gloss bevel.
+uint16_t baseColor565(Color c) {
+    switch (c) {
+        case Color::Cyan:   return 0x061F;
+        case Color::Blue:   return 0x025F;
+        case Color::Orange: return 0xFCE3;
+        case Color::Yellow: return 0xFEA0;
+        case Color::Green:  return 0x3648;
+        case Color::Purple: return 0x7977;
+        case Color::Red:    return 0xB884;
+        default:             return 0xFFFF;
+    }
+}
+
+uint16_t scaleShade565(uint16_t c, float factor) {
+    int r = (c >> 11) & 0x1F, g = (c >> 5) & 0x3F, b = c & 0x1F;
+    // Expand to 8-bit, scale, clamp, re-quantize back to 5/6/5.
+    int r8 = (r * 255 + 15) / 31, g8 = (g * 255 + 31) / 63, b8 = (b * 255 + 15) / 31;
+    auto scaleClamp = [factor](int v) {
+        int scaled = static_cast<int>(v * factor);
+        if (scaled < 0) scaled = 0;
+        if (scaled > 255) scaled = 255;
+        return scaled;
+    };
+    r8 = scaleClamp(r8);
+    g8 = scaleClamp(g8);
+    b8 = scaleClamp(b8);
+    return static_cast<uint16_t>(((r8 & 0xF8) << 8) | ((g8 & 0xFC) << 3) | (b8 >> 3));
+}
+} // namespace
+
+void BlockStackScene::drawGlossyCell(Renderer& renderer, int x, int y, Color color) {
+    uint16_t base = baseColor565(color);
+    uint16_t light = scaleShade565(base, 1.5f);
+    uint16_t dark = scaleShade565(base, 0.55f);
+    uint16_t shine = scaleShade565(base, 1.9f);
+    int w = kCellSize - 2, h = kCellSize - 2;
+
+    renderer.drawFilledRectangleW(x, y, w, h, base);
+    // Beveled edges: darker bottom+right, lighter top+left.
+    renderer.drawFilledRectangleW(x, y + h - 2, w, 2, dark);
+    renderer.drawFilledRectangleW(x + w - 2, y, 2, h, dark);
+    renderer.drawFilledRectangleW(x, y, w, 2, light);
+    renderer.drawFilledRectangleW(x, y, 2, h, light);
+    // Glossy shine block, upper-left.
+    int shineW = w / 2, shineH = h / 3;
+    if (shineW > 0 && shineH > 0) {
+        renderer.drawFilledRectangleW(x + 2, y + 2, shineW, shineH, shine);
+    }
+}
+
 Color BlockStackScene::colorForPiece(PieceType type) const {
     switch (type) {
         case PieceType::I: return Color::Cyan;
@@ -556,8 +611,7 @@ void BlockStackScene::drawPiece(Renderer& renderer, const ActivePiece& p, int or
         if (ghost) {
             renderer.drawRectangle(x + 1, y + 1, kCellSize - 2, kCellSize - 2, c);
         } else {
-            renderer.drawFilledRectangle(x + 1, y + 1, kCellSize - 2, kCellSize - 2, c);
-            renderer.drawFilledRectangle(x + 1, y + 1, kCellSize - 2, 2, Color::White);
+            drawGlossyCell(renderer, x + 1, y + 1, c);
         }
     }
 }
@@ -584,10 +638,13 @@ void BlockStackScene::drawGrid(Renderer& renderer) {
                     if (flashRows[i] == r) { flashing = true; break; }
                 }
             }
-            Color cell = flashing ? Color::White : static_cast<Color>(grid[r][c] - 1);
             int x = kFieldLeft + c * kCellSize;
             int y = kFieldTop + (r - kHiddenRows) * kCellSize;
-            renderer.drawFilledRectangle(x + 1, y + 1, kCellSize - 2, kCellSize - 2, cell);
+            if (flashing) {
+                renderer.drawFilledRectangle(x + 1, y + 1, kCellSize - 2, kCellSize - 2, Color::White);
+            } else {
+                drawGlossyCell(renderer, x + 1, y + 1, static_cast<Color>(grid[r][c] - 1));
+            }
         }
     }
 

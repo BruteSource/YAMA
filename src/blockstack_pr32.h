@@ -140,6 +140,16 @@ private:
     void drawHUD(pixelroot32::graphics::Renderer& renderer);
     pixelroot32::graphics::Color colorForPiece(PieceType type) const;
 
+    // Beveled/glossy cell rendering (base fill + darker bottom-right edge +
+    // lighter top-left edge + a bright upper-left "shine" block) shared by
+    // both the falling piece and the locked stack — replaces the old flat
+    // fill (stack cells) / flat-fill-plus-one-flat-highlight-strip (falling
+    // piece) with the same richer look everywhere. Needs raw RGB565 (via
+    // drawFilledRectangleW), not the engine's 16-slot Color enum, since
+    // computing a lighter/darker shade of a palette-index color isn't
+    // meaningful — only an actual RGB value can be scaled.
+    void drawGlossyCell(pixelroot32::graphics::Renderer& renderer, int x, int y, pixelroot32::graphics::Color color);
+
     // Ambient background: dim falling-glyph "code rain" columns using
     // an ORIGINAL invented 8x8 pictographic glyph set (hand-drawn
     // abstract symbols, not real letters or any real writing system —

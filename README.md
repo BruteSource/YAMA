@@ -64,7 +64,7 @@ Custom ESP32 board: 2.0" 240x320 ST7789 SPI TFT, EC11 rotary encoder with an onb
 
 <img src="docs/photos/console_1.jpg" width="300"> <img src="docs/photos/console_2.jpg" width="300">
 
-**~$20 to make.** 3D printed case, held together with hot glue, cold solder joints, and dreams.
+**~$20 to make.** 3D printed case — the whole thing is held together with hot glue, cold solder joints, and dreams.
 
 ## Build / flash
 

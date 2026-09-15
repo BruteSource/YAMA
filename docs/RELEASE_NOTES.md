@@ -9,37 +9,37 @@ This is a **beta**: all 7 games are playable end-to-end, but numeric tuning (spe
 ### Bubble Bobble
 Platformer bubble-trap-and-pop action across a multi-screen level.
 
-<img src="docs/screenshots/bubblebobble_1.png" width="240"> <img src="docs/screenshots/bubblebobble_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/bubblebobble_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/bubblebobble_2.png" width="240">
 
 ### Pac-Man
 Maze chase with full ghost AI (scatter/chase/frightened modes), power pellets, and fruit bonuses.
 
-<img src="docs/screenshots/pacman_1.png" width="240"> <img src="docs/screenshots/pacman_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/pacman_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/pacman_2.png" width="240">
 
 ### Galaga
 Fixed-shooter with diving enemy formations and the tractor-beam capture/rescue mechanic.
 
-<img src="docs/screenshots/galaga_1.png" width="240"> <img src="docs/screenshots/galaga_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/galaga_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/galaga_2.png" width="240">
 
 ### Arkanoid
 Brick-breaking paddle-and-ball action with powerups and a boss fight.
 
-<img src="docs/screenshots/arkanoid_1.png" width="240"> <img src="docs/screenshots/arkanoid_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/arkanoid_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/arkanoid_2.png" width="240">
 
 ### Block Stack
 An original falling-block puzzle game (hold piece, next-piece preview, line clears).
 
-<img src="docs/screenshots/blockstack_1.png" width="240"> <img src="docs/screenshots/blockstack_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/blockstack_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/blockstack_2.png" width="240">
 
 ### R-Type
 Vertical scrolling shmup: charge-shot weapon (cycle between normal/spread/laser), an auto-firing support drone, drifting enemies and turrets, and a 3-phase boss that splits at low HP.
 
-<img src="docs/screenshots/rtype_1.png" width="240"> <img src="docs/screenshots/rtype_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/rtype_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/rtype_2.png" width="240">
 
 ### Dig Dug
 Newest addition: tunnel through dirt, inflate enemies with a pump attack until they burst, or lure them under a rock and dig out its support to crush them.
 
-<img src="docs/screenshots/digdug_1.png" width="240"> <img src="docs/screenshots/digdug_2.png" width="240">
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/digdug_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/digdug_2.png" width="240">
 
 ## Platform features
 

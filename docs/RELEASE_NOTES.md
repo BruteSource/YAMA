@@ -4,6 +4,8 @@
 
 This is a **beta**: all 7 games are playable end-to-end, but numeric tuning (speed, difficulty, timing) is a first pass and not yet fully balanced. See "Known issues" below.
 
+**This is a work-in-progress hobby project, not a final release — just for fun.** It was also **vibe-coded**: built collaboratively with an AI coding assistant rather than written by hand line-by-line.
+
 ## Games
 
 ### Bubble Bobble

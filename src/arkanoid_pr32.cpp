@@ -1107,7 +1107,6 @@ void ArkanoidScene::drawTitleScreen(Renderer& renderer) {
         const char* push = "PUSH ONLY 1 PLAYER BUTTON";
         renderer.drawText(push, centerX(push, kHudFont), 180, Color::White, 1, kHudFont);
     }
-    renderer.drawText("TAITO", centerX("TAITO", kHudFont), 220, Color::Red, 1, kHudFont);
     renderer.drawText("CREDIT 1", 24, SCREEN_H - 24, Color::White, 1, kHudFont);
 }
 

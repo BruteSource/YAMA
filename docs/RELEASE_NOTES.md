@@ -19,6 +19,21 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 115200 write_flash 0x0 YAMA-v
 
 Replace `/dev/ttyUSB0` with your board's serial port (e.g. `COM3` on Windows). This assumes the same board this project targets — a bare ESP32 dev module (`esp32dev` in PlatformIO), 4MB flash, DIO mode. If you're building for different hardware, build from source instead (see the main [README](README.md#build--flash)).
 
+## Platform features
+
+- Shared 7-game arcade menu with rainbow-animated selection and scrolling viewport
+- Backlight brightness control (hardware PWM via a dedicated power switch)
+- Mute toggle, idle auto light-sleep (button-wake, resumes exactly where you left off), and a manually-triggered deep-sleep menu entry for long downtime
+- Hard reset combo
+- High scores persisted per-game across power cycles
+
+## Known issues / not yet final
+
+- Numeric tuning (speed, difficulty curves, enemy timing) across all 7 games is a first pass, not yet fully playtested for balance
+- Dig Dug's Drake enemy doesn't have its fire-breath attack yet (contact-only for now)
+- A low-volume noise from the piezo buzzer has been traced to the battery boost converter, audible only during deep sleep on battery power — cosmetic, doesn't affect gameplay, hardware fix pending
+- The board's physical case is still in progress
+
 ## Games
 
 ### Bubble Bobble
@@ -55,21 +70,6 @@ Vertical scrolling shmup: charge-shot weapon (cycle between normal/spread/laser)
 Newest addition: tunnel through dirt, inflate enemies with a pump attack until they burst, or lure them under a rock and dig out its support to crush them.
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/digdug_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/digdug_2.png" width="240">
-
-## Platform features
-
-- Shared 7-game arcade menu with rainbow-animated selection and scrolling viewport
-- Backlight brightness control (hardware PWM via a dedicated power switch)
-- Mute toggle, idle auto light-sleep (button-wake, resumes exactly where you left off), and a manually-triggered deep-sleep menu entry for long downtime
-- Hard reset combo
-- High scores persisted per-game across power cycles
-
-## Known issues / not yet final
-
-- Numeric tuning (speed, difficulty curves, enemy timing) across all 7 games is a first pass, not yet fully playtested for balance
-- Dig Dug's Drake enemy doesn't have its fire-breath attack yet (contact-only for now)
-- A low-volume noise from the piezo buzzer has been traced to the battery boost converter, audible only during deep sleep on battery power — cosmetic, doesn't affect gameplay, hardware fix pending
-- The board's physical case is still in progress
 
 ## Hardware
 

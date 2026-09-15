@@ -142,8 +142,12 @@ save_sprite("chevron_down", make_chevron(False))
 LOGO_W, LOGO_H = 220, 32
 OUTLINE = (20, 20, 20)
 SHADOW = (10, 6, 16)
-text = "ESP32 ARCADE"
-font_size = LOGO_W // len(text)
+text = "YAMA"
+# Capped rather than LOGO_W // len(text) -- that formula assumed a long
+# 12-char string ("ESP32 ARCADE"); naively applied to a 4-char word it'd
+# demand ~55px glyphs, well past what LOGO_H=32 can hold. 26px is the
+# largest that still leaves clean top/bottom margin at this height.
+font_size = min(LOGO_W // len(text), 26)
 font = ImageFont.truetype(os.path.join(SCRIPT_DIR, "fonts", "PressStart2P-Regular.ttf"), font_size)
 
 bbox_probe = ImageDraw.Draw(Image.new("RGBA", (1, 1))).textbbox((0, 0), text, font=font)

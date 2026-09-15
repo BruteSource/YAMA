@@ -1,10 +1,10 @@
 # YAMA v0.1.0-beta — first public beta
 
-**Y**et **A**nother **M**icrocontroller **A**rcade: a 7-game handheld arcade console built from scratch on a custom ESP32 + 2.0" ST7789 TFT + rotary encoder board, running on the [PixelRoot32](https://github.com/PixelRoot32-Game-Engine/PixelRoot32-Game-Engine) game engine.
+**Y**et **A**nother **M**icrocontroller **A**rcade: a 7-game handheld arcade console on a custom ESP32 + 2.0" ST7789 TFT + rotary encoder board, running on the [PixelRoot32](https://github.com/PixelRoot32-Game-Engine/PixelRoot32-Game-Engine) game engine.
 
 This is a **beta**: all 7 games are playable end-to-end, but numeric tuning (speed, difficulty, timing) is a first pass and not yet fully balanced. See "Known issues" below.
 
-**This is a work-in-progress hobby project, not a final release — just for fun.** It was also **vibe-coded**: built collaboratively with an AI coding assistant rather than written by hand line-by-line.
+**This is a work-in-progress hobby project, not a final release — just for fun.** It was **vibe-coded**: built collaboratively with an AI coding assistant, using several other open-source projects as references (see each game's credit below) rather than written from scratch by hand.
 
 ## Flashing this release
 

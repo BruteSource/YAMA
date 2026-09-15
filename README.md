@@ -1,8 +1,8 @@
 # YAMA — Yet Another Microcontroller Arcade
 
-A 7-game handheld arcade console, built from scratch on a custom ESP32 board with a 2.0" color TFT, rotary encoder, thumbstick, and buzzer — running on the [PixelRoot32](https://github.com/PixelRoot32-Game-Engine/PixelRoot32-Game-Engine) game engine.
+A 7-game handheld arcade console on a custom ESP32 board with a 2.0" color TFT, rotary encoder, thumbstick, and buzzer — running on the [PixelRoot32](https://github.com/PixelRoot32-Game-Engine/PixelRoot32-Game-Engine) game engine.
 
-> **Work in progress, just for fun.** This is a hobby project, not a finished/final release — balance, polish, and a few features are still in flux. It was also **vibe-coded**: built collaboratively with an AI coding assistant rather than written by hand line-by-line.
+> **Work in progress, just for fun.** This is a hobby project, not a finished/final release — balance, polish, and a few features are still in flux. It was **vibe-coded**: built collaboratively with an AI coding assistant, using several other open-source projects as references (see each game's credit below) rather than written from scratch by hand.
 
 <img src="docs/screenshots/menu.png" width="260">
 

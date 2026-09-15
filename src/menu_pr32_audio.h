@@ -13,37 +13,43 @@ using buzzer_audio::Note;
 using buzzer_audio::NoteSequencer;
 
 constexpr uint16_t NOTE_C5  = 523;
+constexpr uint16_t NOTE_D5  = 587;
+constexpr uint16_t NOTE_E5  = 659;
 constexpr uint16_t NOTE_F5  = 698;
 constexpr uint16_t NOTE_G5  = 784;
-constexpr uint16_t NOTE_AS5 = 932;
 constexpr uint16_t NOTE_A5  = 880;
+constexpr uint16_t NOTE_B5  = 988;
 constexpr uint16_t NOTE_C6  = 1047;
+constexpr uint16_t NOTE_D6  = 1175;
+constexpr uint16_t NOTE_E6  = 1319;
 constexpr uint16_t NOTE_F6  = 1397;
-constexpr uint16_t NOTE_G6  = 1568;
-constexpr uint16_t NOTE_AS6 = 1865;
 
-// User-supplied RTTTL string, transcribed directly:
-// "DnBMenu:d=16,o=5,b=170:c,p,c6,p,g,p,g6,p,a#,p,a#6,p,f,p,f6,p,
-//  c,c,c6,p,g,g,g6,p,a#,a#,a#6,p,f,f,f6,p" — replaces the Rondo alla
-// Turca loop (still liked less than this). d=16/b=170 means every
-// step (note or rest) is a sixteenth note at 170bpm: wholenote =
-// 60000*4/170 ≈ 1412ms, /16 ≈ 88ms — the standard RTTTL tempo formula,
-// applied here since NoteSequencer takes milliseconds, not RTTTL's
-// own duration codes. "p" = rest (0 Hz). A four-on-the-floor
-// octave-jump bassline (root note then its octave, both against a
-// 16th-note rest grid, doubling up unrested on the repeat of each
-// phrase) — a genuine DnB-style pattern, not something transcribed
-// from a copyrighted track.
+// "Chips Chips (NES Style Music)" by mensch-maschine on Pixabay
+// (https://pixabay.com/music/video-games-chips-chips-nes-style-music-165102/),
+// Pixabay Content License — free to use/modify, no attribution
+// required, so no IP concern the way the Rick Astley tune had.
+// Transcribed directly from a user-supplied RTTTL string: "ChipsChips:
+// d=4,o=5,b=140:8c,8e,8g,8c6,8g,8e,c,8d,8f,8a,8d6,8a,8f,d,8e,8g,8b,
+// 8e6,8b,8g,e,8f,8a,8c6,8f6,8c6,8a,f" — a climbing set of major-triad
+// arpeggios (C, then D, then E, then F as the root), each spanning up
+// an octave and back down before landing on a held root note. Tempo
+// is the string's own b=140: wholenote = 60000*4/140 ≈ 1714ms; d=4
+// (quarter) ≈ 429ms, d=8 (eighth) ≈ 214ms — the standard RTTTL tempo
+// formula, applied here since NoteSequencer takes milliseconds, not
+// RTTTL's own duration codes. See menu_music_preference.md (memory)
+// for the full menu-music iteration history.
 constexpr Note kMenuTune[] = {
-    { NOTE_C5, 88 }, { 0, 88 }, { NOTE_C6, 88 }, { 0, 88 },
-    { NOTE_G5, 88 }, { 0, 88 }, { NOTE_G6, 88 }, { 0, 88 },
-    { NOTE_AS5, 88 }, { 0, 88 }, { NOTE_AS6, 88 }, { 0, 88 },
-    { NOTE_F5, 88 }, { 0, 88 }, { NOTE_F6, 88 }, { 0, 88 },
+    { NOTE_C5, 214 }, { NOTE_E5, 214 }, { NOTE_G5, 214 }, { NOTE_C6, 214 },
+    { NOTE_G5, 214 }, { NOTE_E5, 214 }, { NOTE_C5, 429 },
 
-    { NOTE_C5, 88 }, { NOTE_C5, 88 }, { NOTE_C6, 88 }, { 0, 88 },
-    { NOTE_G5, 88 }, { NOTE_G5, 88 }, { NOTE_G6, 88 }, { 0, 88 },
-    { NOTE_AS5, 88 }, { NOTE_AS5, 88 }, { NOTE_AS6, 88 }, { 0, 88 },
-    { NOTE_F5, 88 }, { NOTE_F5, 88 }, { NOTE_F6, 88 }, { 0, 88 },
+    { NOTE_D5, 214 }, { NOTE_F5, 214 }, { NOTE_A5, 214 }, { NOTE_D6, 214 },
+    { NOTE_A5, 214 }, { NOTE_F5, 214 }, { NOTE_D5, 429 },
+
+    { NOTE_E5, 214 }, { NOTE_G5, 214 }, { NOTE_B5, 214 }, { NOTE_E6, 214 },
+    { NOTE_B5, 214 }, { NOTE_G5, 214 }, { NOTE_E5, 429 },
+
+    { NOTE_F5, 214 }, { NOTE_A5, 214 }, { NOTE_C6, 214 }, { NOTE_F6, 214 },
+    { NOTE_C6, 214 }, { NOTE_A5, 214 }, { NOTE_F5, 429 },
 };
 constexpr int kMenuTuneLen = sizeof(kMenuTune) / sizeof(kMenuTune[0]);
 

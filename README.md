@@ -4,7 +4,7 @@ A 7-game handheld arcade console on a custom ESP32 board with a 2.0" color TFT, 
 
 > **Work in progress, just for fun.** This is a hobby project, not a finished/final release — balance, polish, and a few features are still in flux. It was **vibe-coded**: built collaboratively with an AI coding assistant, using several other open-source projects as references (see each game's credit below) rather than written from scratch by hand.
 
-<img src="docs/screenshots/menu.png" width="260">
+<img src="docs/screenshots/menu.gif" width="260">
 
 ## Features
 

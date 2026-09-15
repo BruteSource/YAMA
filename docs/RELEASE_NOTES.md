@@ -6,6 +6,8 @@ This is a **beta**: all 7 games are playable end-to-end, but numeric tuning (spe
 
 **This is a work-in-progress hobby project, not a final release — just for fun.** It was **vibe-coded**: built collaboratively with an AI coding assistant, using several other open-source projects as references (see each game's credit below) rather than written from scratch by hand.
 
+<img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/menu.gif" width="240">
+
 ## Flashing this release
 
 This release includes `YAMA-v0.1.0-beta-full.bin`, a single pre-built image containing the bootloader, partition table, and firmware — flash it directly to an ESP32 with [esptool](https://github.com/espressif/esptool):

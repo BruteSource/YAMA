@@ -6,6 +6,17 @@ This is a **beta**: all 7 games are playable end-to-end, but numeric tuning (spe
 
 **This is a work-in-progress hobby project, not a final release — just for fun.** It was also **vibe-coded**: built collaboratively with an AI coding assistant rather than written by hand line-by-line.
 
+## Flashing this release
+
+This release includes `YAMA-v0.1.0-beta-full.bin`, a single pre-built image containing the bootloader, partition table, and firmware — flash it directly to an ESP32 with [esptool](https://github.com/espressif/esptool):
+
+```
+pip install esptool
+esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 115200 write_flash 0x0 YAMA-v0.1.0-beta-full.bin
+```
+
+Replace `/dev/ttyUSB0` with your board's serial port (e.g. `COM3` on Windows). This assumes the same board this project targets — a bare ESP32 dev module (`esp32dev` in PlatformIO), 4MB flash, DIO mode. If you're building for different hardware, build from source instead (see the main [README](README.md#build--flash)).
+
 ## Games
 
 ### Bubble Bobble

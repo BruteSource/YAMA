@@ -23,7 +23,7 @@ constexpr MenuEntry kEntries[] = {
     { "PAC-MAN", true },
     { "GALAGA", true },
     { "ARKANOID", true },
-    { "BLOCK STACK", true },
+    { "TETRIS", true },
     { "R-TYPE", true },
     { "DIG DUG", true },
     { "DEEP SLEEP", true },

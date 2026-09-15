@@ -438,9 +438,9 @@ void BlockStackScene::update(unsigned long deltaTime) {
         return;
     }
 
-    // Left/right movement: thumbstick with DAS (delayed auto-shift, same
-    // idiom as every serious falling-block game) plus the encoder as a
-    // discrete nudge, matching every other game's input convention here.
+    // Left/right movement: thumbstick only, with DAS (delayed auto-shift,
+    // same idiom as every serious falling-block game) — the encoder used
+    // to also nudge left/right here, but now rotates instead (below).
     float tx = pendingInput.thumbX;
     int dir = 0;
     if (fabsf(tx) > 0.35f) dir = (tx > 0) ? 1 : -1;
@@ -457,13 +457,21 @@ void BlockStackScene::update(unsigned long deltaTime) {
             dasTimer = kDasDelayS;  // re-arm for the repeat rate, not the initial delay
         }
     }
-    if (pendingInput.encDelta > 0) tryMove(1, 0);
-    else if (pendingInput.encDelta < 0) tryMove(-1, 0);
+    // Encoder rotates instead of nudging left/right (user's explicit
+    // preference over the redundant-with-thumbstick move it used to do) —
+    // one tick = one rotation step, same direction sense as the encoder's
+    // own physical rotation. R3 (clicking the encoder in) is the "auto
+    // drop" hard-drop instead of hold — A takes over hold piece instead,
+    // since hard drop moved off it. RB/LB still rotate too (unchanged,
+    // kept as a redundant alternate control, same as every other input
+    // this project layers rather than removes).
+    if (pendingInput.encDelta > 0) tryRotate(1);
+    else if (pendingInput.encDelta < 0) tryRotate(-1);
 
     if (pendingInput.rbEdge) tryRotate(1);
     if (pendingInput.lbEdge) tryRotate(-1);
-    if (pendingInput.r3Edge && !pendingInput.r3Held) holdPiece();
-    if (pendingInput.aEdge) hardDrop();
+    if (pendingInput.aEdge) holdPiece();
+    if (pendingInput.r3Edge && !pendingInput.r3Held) hardDrop();
 
     bool softDrop = pendingInput.thumbY > 0.5f;
     float interval = softDrop ? gravityIntervalS * 0.1f : gravityIntervalS;
@@ -596,9 +604,9 @@ void BlockStackScene::drawTitleScreen(Renderer& renderer) {
     auto centerX = [&](const char* text, const pr32::graphics::Font* f, uint8_t size = 1) {
         return SCREEN_W / 2 - fm::FontManager::textWidth(f, text, size) / 2;
     };
-    const char* title = "BLOCK STACK";
+    const char* title = "TETRIS";
     renderer.drawText(title, centerX(title, kLogoFont, 1), 100, Color::Cyan, 1, kLogoFont);
-    const char* sub = "AN ORIGINAL FALLING-BLOCK GAME";
+    const char* sub = "THE CLASSIC FALLING-BLOCK PUZZLE";
     renderer.drawText(sub, centerX(sub, kHudFont), 140, Color::White, 1, kHudFont);
     if (fmodf(titleTimer, 1.0f) < 0.7f) {
         const char* push = "PRESS A TO START";

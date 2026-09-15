@@ -60,9 +60,9 @@ Brick-breaking paddle-and-ball action with powerups and a boss fight.
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/arkanoid_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/arkanoid_2.png" width="240">
 
-### Block Stack
-An original falling-block puzzle game (hold piece, next-piece preview, line clears).
-*Reference: the classic falling-block puzzle genre; an original title/rename rather than a direct recreation.*
+### Tetris
+Falling-block puzzle action — rotate with the encoder, hold piece, next-piece preview, line clears.
+*Reference: the original Tetris (Alexey Pajitnov, 1984).*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/blockstack_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/blockstack_2.png" width="240">
 

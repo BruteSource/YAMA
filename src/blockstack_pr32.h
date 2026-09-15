@@ -1,12 +1,17 @@
-// Block Stack: an original-branded falling-block puzzle game for
-// PixelRoot32 (see ~/.claude/plans/crimson-falling-cascade.md). Mechanics
-// (7 tetromino shapes, SRS-style rotation, 7-bag randomizer, hold/next
-// queue, tiered line-clear scoring) ported faithfully from studying
-// Tetro48/cambridge (cloned to /tmp/cambridge_ref, a real open-source
-// "falling-block game engine" that itself avoids the name "Tetris" for
-// trademark reasons) — these are generic, publicly-documented game
-// mechanics, not copyrightable expression, so nothing here is softened
-// for IP reasons except the NAME, which is original. All visuals are
+// Tetris (internal codename "Block Stack" — see the file/namespace
+// naming convention note in rtype_pr32.h; on-screen title is "TETRIS"
+// per the user's explicit call, reversing the original name choice
+// below). Mechanics (7 tetromino shapes, SRS-style rotation, 7-bag
+// randomizer, hold/next queue, tiered line-clear scoring) ported
+// faithfully from studying Tetro48/cambridge (cloned to
+// /tmp/cambridge_ref, a real open-source "falling-block game engine"
+// that itself avoids the name "Tetris" for trademark reasons — Tetris
+// is unusually aggressively trademark-enforced compared to the other
+// real arcade names this project uses elsewhere, which is why this
+// game originally shipped under an original name when every other
+// game kept its real one; noted here for the record, not reversed
+// unilaterally). The mechanics themselves are generic, publicly-
+// documented game rules, not copyrightable expression. All visuals are
 // flat-colored primitives (no cropped sprites needed, simplest asset
 // pipeline of any game in this project) and all audio is original.
 //

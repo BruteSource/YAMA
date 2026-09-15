@@ -68,4 +68,25 @@ constexpr Note kStageClearSfx[] = {
 };
 constexpr int kStageClearSfxLen = sizeof(kStageClearSfx) / sizeof(kStageClearSfx[0]);
 
+// Background music loop — an original driving arpeggio (A minor),
+// composed fresh for this project's single-voice piezo buzzer, no
+// reference transcribed (there's nothing to transcribe: R-Type has no
+// famous public-domain tune the way Tetris does, so this is genuinely
+// original rather than an arrangement of something real). Looped
+// manually by the scene (see RTypeScene::updateMusic()) since
+// NoteSequencer only plays once per play() call — same pattern as
+// blockstack_pr32_audio.h's kThemeMusic.
+constexpr Note kThemeMusic[] = {
+    { NOTE_A2, 140 }, { NOTE_A4, 140 }, { NOTE_E4, 140 }, { NOTE_A4, 140 },
+    { NOTE_C5, 140 }, { NOTE_A4, 140 }, { NOTE_E4, 140 }, { NOTE_A4, 140 },
+    { NOTE_A2, 140 }, { NOTE_A4, 140 }, { NOTE_G4, 140 }, { NOTE_A4, 140 },
+    { NOTE_C5, 140 }, { NOTE_E5, 140 }, { NOTE_C5, 140 }, { NOTE_A4, 140 },
+    { NOTE_A2, 140 }, { NOTE_A4, 140 }, { NOTE_E4, 140 }, { NOTE_A4, 140 },
+    { NOTE_C5, 140 }, { NOTE_A4, 140 }, { NOTE_G4, 140 }, { NOTE_E4, 140 },
+    { NOTE_A2, 140 }, { NOTE_C4, 140 }, { NOTE_E4, 140 }, { NOTE_G4, 140 },
+    { NOTE_A4, 140 }, { NOTE_C5, 140 }, { NOTE_E5, 140 }, { NOTE_C6, 140 },
+    { 0, 220 },
+};
+constexpr int kThemeMusicLen = sizeof(kThemeMusic) / sizeof(kThemeMusic[0]);
+
 } // namespace rtype_pr32_audio

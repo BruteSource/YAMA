@@ -140,7 +140,7 @@ void switchScene(pr32::core::Scene* scene, ActiveApp app) {
 // unconditionally: exactly one of the four pointers is non-null
 // whenever activeApp != Menu (Menu itself owns no game pointer to
 // free).
-void returnToMenu() {
+void destroyCurrentGameScene() {
   switch (activeApp) {
     case ActiveApp::BubbleBobble: bubbleBobbleScene->~BubbleBobbleScene(); bubbleBobbleScene = nullptr; break;
     case ActiveApp::PacMan:       pacManScene->~PacManScene();             pacManScene = nullptr;       break;
@@ -151,13 +151,186 @@ void returnToMenu() {
     case ActiveApp::DigDug:       digdugScene->~DigDugScene();             digdugScene = nullptr;       break;
     case ActiveApp::Menu:         break;
   }
+}
+
+// Forward-declared: demo mode (below, near its own globals) needs to
+// hijack a mid-game "return to menu" request into "advance to the next
+// demo game" instead — see demoAdvanceGame().
+bool demoModeActive = false;
+void demoAdvanceGame();
+
+// L3 (thumbstick click) held 2s at the menu triggers demo/attract mode
+// — see enterDemoMode() and its neighboring comment.
+unsigned long l3HeldSinceMs = 0;
+bool demoTriggerLatched = false;
+constexpr unsigned long kDemoTriggerHoldMs = 2000;
+
+void returnToMenu() {
+  if (demoModeActive) { demoAdvanceGame(); return; }
+  destroyCurrentGameScene();
   switchScene(&menuScene, ActiveApp::Menu);
+}
+
+// --- Attract/demo mode: auto-plays each game for a while so the console
+// can show itself off without anyone touching it — triggered by holding
+// L3 (thumbstick click) 2s at the menu, cancelled by any real input. ---
+int demoGameIdx = 0;    // 0..6, same order as the menu / ActiveApp
+int demoLap = 0;        // 0, 1, 2 -> lap 1/2/3; lap index 1 ("the second
+                        // loop") skips each game ahead a level/round
+                        // before playing it, where that game has a debug
+                        // hook for it. Wraps back to 0 after lap 2 (index
+                        // 2), i.e. repeats every 3 laps, indefinitely,
+                        // until cancelled.
+unsigned long demoGameStartMs = 0;
+constexpr unsigned long kDemoGameDurationMs = 15000;
+
+// Constructs game `idx` exactly like the menu's own selection branches
+// (same placement-new-into-sceneStorage pattern), then, on lap index 1
+// only, calls that game's existing debug level/round-skip method if it
+// has one. Not every game does — Galaga, Block Stack, and Dig Dug don't
+// currently expose a matching hook, so those three just play their
+// normal opening on every lap rather than skipping ahead.
+void demoEnterGame(int idx) {
+  switch (idx) {
+    case 0:
+      bubbleBobbleScene = new (sceneStorage) bubblebobble_pr32::BubbleBobbleScene();
+      switchScene(bubbleBobbleScene, ActiveApp::BubbleBobble);
+      if (demoLap == 1) bubbleBobbleScene->debugNextLevel();
+      break;
+    case 1:
+      pacManScene = new (sceneStorage) pacman_pr32::PacManScene();
+      switchScene(pacManScene, ActiveApp::PacMan);
+      if (demoLap == 1) pacManScene->debugAdvanceLevel();
+      break;
+    case 2:
+      galagaScene = new (sceneStorage) galaga_pr32::GalagaScene();
+      switchScene(galagaScene, ActiveApp::Galaga);
+      break;
+    case 3:
+      arkanoidScene = new (sceneStorage) arkanoid_pr32::ArkanoidScene();
+      switchScene(arkanoidScene, ActiveApp::Arkanoid);
+      if (demoLap == 1) arkanoidScene->debugSkipRound();
+      break;
+    case 4:
+      blockStackScene = new (sceneStorage) blockstack_pr32::BlockStackScene();
+      switchScene(blockStackScene, ActiveApp::BlockStack);
+      break;
+    case 5:
+      rtypeScene = new (sceneStorage) rtype_pr32::RTypeScene();
+      switchScene(rtypeScene, ActiveApp::RType);
+      if (demoLap == 1) rtypeScene->debugSkipToBoss();
+      break;
+    case 6:
+      digdugScene = new (sceneStorage) digdug_pr32::DigDugScene();
+      switchScene(digdugScene, ActiveApp::DigDug);
+      break;
+  }
+  demoGameStartMs = millis();
+}
+
+void enterDemoMode() {
+  demoModeActive = true;
+  demoGameIdx = 0;
+  demoLap = 0;
+  // Reset so a stale hold-timestamp from triggering this can't make the
+  // menu's L3-hold check look like it's already been held 2s again the
+  // instant demo mode ends, if L3 happens to still be down then.
+  l3HeldSinceMs = 0;
+  demoTriggerLatched = false;
+  menuScene.clearSelection();
+  demoEnterGame(demoGameIdx);
+}
+
+// Called both when a game's own 10-second timer expires AND when a game
+// requests an early return-to-menu on its own (game over, etc. —
+// returnToMenu() reroutes here instead while demo mode is active) so a
+// game that ends itself early doesn't fall through to the real
+// interactive menu mid-demo.
+void demoAdvanceGame() {
+  destroyCurrentGameScene();
+  ++demoGameIdx;
+  if (demoGameIdx >= 7) {
+    demoGameIdx = 0;
+    demoLap = (demoLap + 1) % 3;
+  }
+  demoEnterGame(demoGameIdx);
+}
+
+void exitDemoMode() {
+  demoModeActive = false;
+  l3HeldSinceMs = 0;
+  demoTriggerLatched = false;
+  destroyCurrentGameScene();
+  switchScene(&menuScene, ActiveApp::Menu);
+}
+
+// A slowly wandering, self-contained input pattern — not "smart" play,
+// just enough continuous movement/firing/rotating to look alive in
+// every game (real attract-mode demos in actual arcades are just as
+// scripted/aimless as this, not literal AI). Every synthetic press is a
+// single-frame edge, never held past one loop() iteration, so it can
+// never accidentally cross any game's pause-hold threshold (500ms+) or
+// this file's own reset/mute-hold combos (which need several SECONDS
+// held) — safe to run through the exact same input pipeline real
+// hardware input does.
+Pr32Input demoSyntheticInput() {
+  Pr32Input in;
+  unsigned long t = millis();
+  in.thumbX = sinf(static_cast<float>(t) * 0.0011f);
+  in.thumbY = cosf(static_cast<float>(t) * 0.0007f);
+
+  // Tetris has its own looping background music (see
+  // blockstack_pr32_audio.h) that ducks out for one-shot SFX on every
+  // rotate/hard-drop/hold — mashing those as often as every other game
+  // gets left the music barely audible under constant SFX. Every
+  // synthetic press that can trigger a Tetris SFX (A/R3/RB/LB edges,
+  // and encoder ticks — 4 of which is one rotate, see
+  // kEncStepThreshold) backs off to a much slower cadence specifically
+  // while Tetris is the demo's current game, so the music actually gets
+  // heard between the occasional piece move.
+  bool quietForMusic = (activeApp == ActiveApp::BlockStack);
+
+  static unsigned long lastFireMs = 0;
+  unsigned long fireInterval = quietForMusic ? 4500 : 650;
+  if (t - lastFireMs > fireInterval) { lastFireMs = t; in.aEdge = true; in.aHeld = true; }
+
+  static unsigned long lastR3Ms = 0;
+  unsigned long r3Interval = quietForMusic ? 5000 : 1400;
+  if (t - lastR3Ms > r3Interval) { lastR3Ms = t; in.r3Edge = true; in.r3Held = true; }
+
+  static unsigned long lastRbMs = 0;
+  unsigned long rbInterval = quietForMusic ? 3800 : 900;
+  if (t - lastRbMs > rbInterval) { lastRbMs = t; in.rbEdge = true; in.rbHeld = true; }
+
+  static unsigned long lastLbMs = 0;
+  unsigned long lbInterval = quietForMusic ? 4200 : 1100;
+  if (t - lastLbMs > lbInterval) { lastLbMs = t; in.lbEdge = true; in.lbHeld = true; }
+
+  static unsigned long lastEncMs = 0;
+  unsigned long encInterval = quietForMusic ? 900 : 130;
+  if (t - lastEncMs > encInterval) {
+    lastEncMs = t;
+    in.encDelta = ((t / 2000) % 2 == 0) ? 1 : -1;
+  }
+  return in;
+}
+
+// True if any of the fields readInput() actually populates from real
+// hardware (or the serial debug-injection protocol) looks like a
+// deliberate press — used to cancel demo mode the instant a person
+// touches anything, same as a real arcade cabinet's attract mode.
+// Thumbstick uses a generous deadzone (0.5) so idle ADC jitter can't
+// false-trigger a cancel.
+bool inputLooksReal(const Pr32Input& in) {
+  return in.encDelta != 0 || in.aEdge || in.rbEdge || in.lbEdge || in.r3Edge || in.l3Edge ||
+         fabsf(in.thumbX) > 0.5f || fabsf(in.thumbY) > 0.5f;
 }
 
 Button a = { PIN_A };
 Button rb = { PIN_RB };
 Button lb = { PIN_LB };
 Button r3 = { PIN_R3 };
+Button l3 = { PIN_L3 };
 long lastEncoderValue = 0;
 bool screenshotRequested = false;
 
@@ -246,6 +419,7 @@ void enterDeepSleep() {
 // convention as this project's other games), so a real remote pause test
 // is `tap 'W', wait >500ms, tap 'W' again`.
 bool debugEncSwLatch = false;
+bool debugL3Latch = false;
 
 // Debug-only level select ('n'ext/'b'ack), added to reach the 5 new levels
 // (added this session, only reachable in normal play by actually clearing
@@ -323,6 +497,10 @@ Pr32Input readInput() {
   in.r3Held = r3.pressed;
   in.r3Edge = encSwChanged && r3.pressed;
 
+  bool l3Changed = updateButton(l3);
+  in.l3Held = l3.pressed;
+  in.l3Edge = l3Changed && l3.pressed;
+
   hardwareReadThumbstick(in.thumbX, in.thumbY);
 
   while (Serial.available()) {
@@ -336,6 +514,8 @@ Pr32Input readInput() {
       case '2': in.lbEdge = true; in.lbHeld = true; break;
       case 'w': in.r3Edge = true; in.r3Held = true; break;
       case 'W': debugEncSwLatch = !debugEncSwLatch; break;
+      case 'q': in.l3Edge = true; in.l3Held = true; break;
+      case 'Q': debugL3Latch = !debugL3Latch; break;
       case 'p': screenshotRequested = true; break;
       case 'n': debugNextLevelRequested = true; break;
       case 'b': debugPrevLevelRequested = true; break;
@@ -370,6 +550,7 @@ Pr32Input readInput() {
     }
   }
   if (debugEncSwLatch) in.r3Held = true;
+  if (debugL3Latch) in.l3Held = true;
   if (debugDirX != 0 || debugDirY != 0) {
     in.thumbX = static_cast<float>(debugDirX);
     in.thumbY = static_cast<float>(debugDirY);
@@ -419,6 +600,33 @@ void loop() {
   if (suppressNextInput) {
     suppressNextInput = false;
     in = Pr32Input(); // discard this one frame's input — see its declaration comment
+  }
+
+  // L3 held 2s at the menu (and only at the menu — holding it mid-game
+  // does nothing here) starts the attract/demo loop.
+  if (activeApp == ActiveApp::Menu && !demoModeActive) {
+    if (in.l3Held) {
+      if (l3HeldSinceMs == 0) l3HeldSinceMs = millis();
+      if (!demoTriggerLatched && millis() - l3HeldSinceMs >= kDemoTriggerHoldMs) {
+        demoTriggerLatched = true;
+        enterDemoMode();
+      }
+    } else {
+      l3HeldSinceMs = 0;
+      demoTriggerLatched = false;
+    }
+  }
+
+  // While demo mode is running, any real press cancels it immediately
+  // (checked against the REAL input just read above, before it gets
+  // replaced below) — otherwise this frame's input is swapped for the
+  // synthetic wandering pattern that actually drives the current game.
+  if (demoModeActive) {
+    if (inputLooksReal(in)) {
+      exitDemoMode();
+    } else {
+      in = demoSyntheticInput();
+    }
   }
 
   // Any real activity (held states, not just edges, so a continuous
@@ -645,6 +853,11 @@ void loop() {
       }
       break;
     }
+  }
+
+  if (demoModeActive && activeApp != ActiveApp::Menu &&
+      millis() - demoGameStartMs >= kDemoGameDurationMs) {
+    demoAdvanceGame();
   }
 
   engine.run();

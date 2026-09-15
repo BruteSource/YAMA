@@ -67,4 +67,29 @@ constexpr Note kRoundClearSfx[] = {
 };
 constexpr int kRoundClearSfxLen = sizeof(kRoundClearSfx) / sizeof(kRoundClearSfx[0]);
 
+// Background music loop — an original playful/bouncy melody (C major),
+// composed fresh for this project's single-voice piezo buzzer. Not a
+// transcription of anything real (there's no famous public-domain Dig
+// Dug theme the way Tetris has Korobeiniki). Looped manually by the
+// scene (see DigDugScene::updateMusic()) since NoteSequencer only
+// plays once per play() call — same pattern as
+// blockstack_pr32_audio.h's kThemeMusic. Was needed here more than
+// most: without it, this game's only sound was the very frequent
+// per-tile "dig tick" SFX firing in rapid bursts while moving, with
+// nothing else to sit underneath it — reported live as sounding
+// terrible on its own.
+constexpr Note kThemeMusic[] = {
+    { NOTE_C5, 160 }, { NOTE_E4, 120 }, { NOTE_G4, 120 }, { NOTE_C5, 160 },
+    { NOTE_E5, 160 }, { NOTE_C5, 120 }, { NOTE_G4, 120 }, { NOTE_E4, 160 },
+    { NOTE_A4, 160 }, { NOTE_C5, 120 }, { NOTE_E4, 120 }, { NOTE_A4, 160 },
+    { NOTE_G4, 160 }, { NOTE_E4, 120 }, { NOTE_C4, 120 }, { NOTE_G4, 200 },
+    { 0, 200 },
+    { NOTE_C5, 160 }, { NOTE_E4, 120 }, { NOTE_G4, 120 }, { NOTE_C5, 160 },
+    { NOTE_E5, 160 }, { NOTE_G5, 120 }, { NOTE_E5, 120 }, { NOTE_C5, 160 },
+    { NOTE_A4, 160 }, { NOTE_G4, 120 }, { NOTE_E4, 120 }, { NOTE_C4, 160 },
+    { NOTE_G4, 160 }, { NOTE_E4, 120 }, { NOTE_C4, 160 },
+    { 0, 260 },
+};
+constexpr int kThemeMusicLen = sizeof(kThemeMusic) / sizeof(kThemeMusic[0]);
+
 } // namespace digdug_pr32_audio

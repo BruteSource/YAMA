@@ -205,6 +205,17 @@ private:
     bool returnToMenuRequested = false;
 
     rtype_pr32_audio::NoteSequencer sfx;
+
+    // Background music (see rtype_pr32_audio::kThemeMusic) — a separate
+    // NoteSequencer from `sfx` since it loops independently of one-shot
+    // SFX, but this hardware only has ONE buzzer voice, so the two can't
+    // literally sound at once. Same duck-for-SFX arbitration as
+    // blockstack_pr32.cpp's updateMusic(): a one-shot SFX always wins the
+    // single voice for its own duration; music simply resumes from its
+    // current note once the SFX ends.
+    rtype_pr32_audio::NoteSequencer music;
+    bool musicShouldPlay = false;
+    void updateMusic();
 };
 
 } // namespace rtype_pr32

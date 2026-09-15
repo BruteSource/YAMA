@@ -169,6 +169,8 @@ struct Pr32Input {
     bool lbHeld = false;
     bool r3Edge = false;
     bool r3Held = false;
+    bool l3Edge = false;
+    bool l3Held = false;
     float thumbX = 0.0f;
     float thumbY = 0.0f;
 };

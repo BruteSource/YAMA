@@ -583,10 +583,36 @@ void DigDugScene::drawRoundClearOverlay(pr32::graphics::Renderer& renderer) {
     renderer.drawText(t2, SCREEN_W / 2 - textWidthEstimate(t2, 1) / 2, SCREEN_H / 2 + 8, Color::White, 1);
 }
 
+// Loops digdug_pr32_audio::kThemeMusic on the single shared buzzer
+// voice, ducking out for one-shot SFX (see the header's comment on why
+// — mirrors blockstack_pr32.cpp's updateMusic() exactly).
+void DigDugScene::updateMusic() {
+    if (!musicShouldPlay) {
+        if (music.isPlaying()) music.stop();
+        return;
+    }
+    if (sfx.isPlaying()) return;
+    if (!music.isPlaying()) {
+        music.play(digdug_pr32_audio::kThemeMusic, digdug_pr32_audio::kThemeMusicLen);
+    } else {
+        music.update();
+    }
+}
+
 // ============================================================= UPDATE ======
 void DigDugScene::update(unsigned long deltaTime) {
     float dt = deltaTime * 0.001f;
     if (dt > 0.05f) dt = 0.05f;
+
+    // sfx was never actually ticked anywhere in this file before — every
+    // SFX's FIRST note played, then just held forever (tone() never
+    // advanced or stopped) until the next sfx.play() call overwrote it
+    // with a different held tone, including the very-frequent per-tile
+    // dig tick — reported live as sounding terrible. Every other game
+    // here calls this every frame; this one simply never did.
+    sfx.update();
+    musicShouldPlay = (state == GameState::Playing);
+    updateMusic();
 
     if (debugSpawnEnemyRequested) {
         debugSpawnEnemyRequested = false;

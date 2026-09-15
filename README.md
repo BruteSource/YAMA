@@ -70,6 +70,16 @@ pio run -t upload --upload-port /dev/ttyUSB0   # flash
 pio device monitor -b 115200                   # serial log
 ```
 
+## Credits
+
+Thanks to these open-source projects, referenced while building the games above:
+
+- **[PixelRoot32 Game Engine](https://github.com/PixelRoot32-Game-Engine/PixelRoot32-Game-Engine)** — the engine this whole console runs on
+- **[JulianRijken/BubbleBobble](https://github.com/JulianRijken/BubbleBobble)** (GPL-3.0) — sprite, level layout, and enemy AI reference for Bubble Bobble
+- **[l-hackari/digdug](https://github.com/l-hackari/digdug)** — generic mechanics reference for Dig Dug
+
+And thanks to the original arcade games this project takes gameplay inspiration from: Pac-Man (Namco, 1980), Galaga (Namco, 1981), Arkanoid (Taito, 1986), Dig Dug (Namco, 1982), and R-Type (Irem, 1987).
+
 ## License
 
 See individual game credits above for third-party reference attribution. This project's own code is otherwise original.

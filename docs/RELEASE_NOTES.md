@@ -38,38 +38,55 @@ Replace `/dev/ttyUSB0` with your board's serial port (e.g. `COM3` on Windows). T
 
 ### Bubble Bobble
 Platformer bubble-trap-and-pop action across a multi-screen level.
+*Reference: [JulianRijken/BubbleBobble](https://github.com/JulianRijken/BubbleBobble) (sprites/level layout/enemy AI reference, GPL-3.0).*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/bubblebobble_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/bubblebobble_2.png" width="240">
 
 ### Pac-Man
 Maze chase with full ghost AI (scatter/chase/frightened modes), power pellets, and fruit bonuses.
+*Reference: the original arcade Pac-Man (Namco, 1980).*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/pacman_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/pacman_2.png" width="240">
 
 ### Galaga
 Fixed-shooter with diving enemy formations and the tractor-beam capture/rescue mechanic.
+*Reference: the original arcade Galaga (Namco, 1981).*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/galaga_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/galaga_2.png" width="240">
 
 ### Arkanoid
 Brick-breaking paddle-and-ball action with powerups and a boss fight.
+*Reference: the original arcade Arkanoid (Taito, 1986).*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/arkanoid_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/arkanoid_2.png" width="240">
 
 ### Block Stack
 An original falling-block puzzle game (hold piece, next-piece preview, line clears).
+*Reference: the classic falling-block puzzle genre; an original title/rename rather than a direct recreation.*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/blockstack_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/blockstack_2.png" width="240">
 
 ### R-Type
 Vertical scrolling shmup: charge-shot weapon (cycle between normal/spread/laser), an auto-firing support drone, drifting enemies and turrets, and a 3-phase boss that splits at low HP.
+*Reference: a look-and-feel homage to R-Type (Irem) — original boss design/name and support-drone naming, generic shmup mechanics only.*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/rtype_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/rtype_2.png" width="240">
 
 ### Dig Dug
 Newest addition: tunnel through dirt, inflate enemies with a pump attack until they burst, or lure them under a rock and dig out its support to crush them.
+*Reference: the original arcade Dig Dug (Namco, 1982); [l-hackari/digdug](https://github.com/l-hackari/digdug) consulted for generic mechanics only (original enemy names/art).*
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/digdug_1.png" width="240"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/screenshots/digdug_2.png" width="240">
+
+## Credits
+
+Thanks to these open-source projects, referenced while building the games above:
+
+- **[PixelRoot32 Game Engine](https://github.com/PixelRoot32-Game-Engine/PixelRoot32-Game-Engine)** — the engine this whole console runs on
+- **[JulianRijken/BubbleBobble](https://github.com/JulianRijken/BubbleBobble)** (GPL-3.0) — sprite, level layout, and enemy AI reference for Bubble Bobble
+- **[l-hackari/digdug](https://github.com/l-hackari/digdug)** — generic mechanics reference for Dig Dug
+
+And thanks to the original arcade games this project takes gameplay inspiration from: Pac-Man (Namco, 1980), Galaga (Namco, 1981), Arkanoid (Taito, 1986), Dig Dug (Namco, 1982), and R-Type (Irem, 1987).
 
 ## Hardware
 

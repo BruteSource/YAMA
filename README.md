@@ -60,7 +60,7 @@ Tunnel through dirt, inflate enemies with a pump attack until they burst, or lur
 
 ## Hardware
 
-Custom ESP32 board: 2.0" 240x320 ST7789 SPI TFT, EC11 rotary encoder with an onboard button, 2 hand-wired tactile buttons, an analog thumbstick, and a piezo buzzer, powered by a LiPo battery through a boost converter. A custom transistor circuit (high-side PNP switch) gives software control over the backlight — brightness, idle dimming, sleep — instead of it being wired always-on.
+A standard ESP32-WROOM module, hand-wired to: a 2.0" 240x320 ST7789 SPI TFT, an EC11 rotary encoder with an onboard button, 2 hand-wired tactile buttons, an analog thumbstick, and a piezo buzzer, powered by a LiPo battery through a boost converter. A custom transistor circuit (high-side PNP switch) gives software control over the backlight — brightness, idle dimming, sleep — instead of it being wired always-on.
 
 <img src="docs/photos/console_1.jpg" width="300"> <img src="docs/photos/console_2.jpg" width="300">
 

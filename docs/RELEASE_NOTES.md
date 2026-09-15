@@ -90,7 +90,7 @@ And thanks to the original arcade games this project takes gameplay inspiration 
 
 ## Hardware
 
-Custom ESP32 board: 2.0" 240x320 ST7789 SPI TFT + EC11 rotary encoder (with onboard button) + 2 hand-wired tactile buttons + analog thumbstick + piezo buzzer, LiPo battery powered through a boost converter. A custom transistor circuit (high-side PNP switch) gives software control over the backlight instead of it being wired always-on. Full wiring reference in the main [README](README.md).
+A standard ESP32-WROOM module, hand-wired to: a 2.0" 240x320 ST7789 SPI TFT + EC11 rotary encoder (with onboard button) + 2 hand-wired tactile buttons + analog thumbstick + piezo buzzer, LiPo battery powered through a boost converter. A custom transistor circuit (high-side PNP switch) gives software control over the backlight instead of it being wired always-on. Full wiring reference in the main [README](README.md).
 
 <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/photos/console_1.jpg" width="300"> <img src="https://raw.githubusercontent.com/BruteSource/YAMA/main/docs/photos/console_2.jpg" width="300">
 
